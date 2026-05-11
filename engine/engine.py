@@ -117,6 +117,10 @@ class ChessEngine:
         if self.nodes & 2047 == 0 and self._time_up():
             return evaluate(board)
 
+        # ── Lặp vị trí → hòa (phải kiểm tra trước TT để TT không trả điểm sai) ──
+        if ply > 0 and board.is_repetition(2):
+            return 0
+
         # ── Transposition Table Lookup ──
         tt_key  = chess.polyglot.zobrist_hash(board)
         tt_hit  = self.tt.get(tt_key)
